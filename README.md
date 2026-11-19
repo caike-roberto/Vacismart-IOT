@@ -65,7 +65,7 @@ Tudo foi montado no simulador:
 
 O DS18B20 tem três pinos. Ligamos o VCC no 5V do Arduino, o GND no GND e o pino de dados (DQ) no pino digital 2. O resistor de 4,7 kΩ fica entre o pino de dados e o 5V, e serve para o sensor funcionar direito.
 
-Print do circuito: `docs/circuito.png` (ainda vou subir a paasta docs pois falta um print)
+Print do circuito: `docs/circuito.png`
 
 ## Como os dados chegam até o sistema
 
