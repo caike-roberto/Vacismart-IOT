@@ -104,3 +104,54 @@ O JSON que o gateway monta é o que combinamos com o Giovanni:
 2. Cole o código de `arduino/leitura_temperatura.ino` na aba `sketch.ino` e o de `arduino/diagram.json` na aba `diagram.json`.
 3. Adicione as bibliotecas `OneWire` e `DallasTemperature` pelo Library Manager (ou cole `arduino/libraries.txt` na aba `libraries.txt`).
 4. Rode a simulação e clique no sensor para mudar a temperatura. O valor aparece no monitor serial.
+
+### 2. Gateway
+
+Precisa de Python 3 instalado. Dentro da pasta `gateway`:
+
+```bash
+pip install -r requirements.txt
+python gateway.py leituras.txt
+```
+
+Assim, sem configurar nada, o gateway só lê o `leituras.txt` e mostra na tela o JSON de cada leitura. Foi como rodamos nos testes.
+
+Para mandar de verdade para a API, o gateway usa duas variáveis de ambiente. No PowerShell:
+
+```powershell
+$env:API_URL = "https://URL-DA-API/api/v1/transportes/ID/leituras"
+$env:API_TOKEN = "token-do-dispositivo"
+python gateway.py leituras.txt
+```
+
+No Linux ou Mac, troque por `export API_URL="..."` e `export API_TOKEN="..."`. O token não fica em nenhum arquivo do repositório. O `.env.example` só mostra quais variáveis existem.
+
+## Testes
+
+Rodamos quatro cenários no Wokwi e tiramos print do monitor serial de cada um. Os prints estão em `docs/evidencias/`.
+
+| # | Cenário | O que fizemos | O que apareceu | Print |
+|---|---|---|---|---|
+| 1 | Normal | Deixamos o sensor em 5,2 °C | O monitor mostrou `5.2` | `teste1_normal.png` |
+| 2 | Atenção | Arrastamos o controle até ficar acima de 7 °C | O monitor mostrou `7.8` | `teste2_atencao.png` |
+| 3 | Fora da faixa | Arrastamos até passar de 8 °C | O monitor mostrou `9.1` | `teste3_ocorrencia.png` |
+| 4 | Sensor desconectado | Tiramos o fio de dados do pino 2 | O monitor mostrou `ERRO_SENSOR` | `teste4_sensor.png` |
+
+Os valores 7,8 e 9,1 não são os que tínhamos planejado (7,5 e 9,3), porque o controle do sensor no Wokwi pula um pouco e não deixa escolher o número exato. Mesmo assim, cada valor caiu na faixa que queríamos testar.
+
+Depois copiamos essas leituras para o `gateway/leituras.txt` e rodamos o gateway. Ele mostrou um JSON para cada temperatura e ignorou a linha `ERRO_SENSOR`, como esperado (print em `docs/evidencias/gateway.png`).
+
+A classificação em normal, atenção e ocorrência é feita pela API Java, não pelo Arduino. Aqui só testamos a medição, o envio e o formato do dado.
+
+## Limitações
+
+- Tudo foi feito em simulador. Não usamos sensor físico, então não tem calibração nem teste com uma caixa térmica real.
+- O gateway precisa de um computador ligado. Se a API estiver fora do ar, ele não guarda as leituras para reenviar depois.
+- No simulador, as leituras passam por um arquivo de texto. Com um Arduino de verdade, o gateway leria direto da porta serial.
+- Os limites de temperatura são só do cenário de demonstração. Isso não é um sistema clínico validado.
+- Não tem GPS nem localização do transporte, foi decisão do grupo.
+
+## Por que fizemos assim
+
+Usamos o DS18B20 porque é um sensor digital de temperatura, serve para a faixa de 2 a 8 °C e liga com um fio de dados só. Como o Arduino Uno não tem rede, usamos o computador como ponte (o gateway) em vez de comprar um módulo Wi-Fi, que era mais caro e mais difícil de testar. O Wokwi entrou porque não tínhamos placa nem sensor, e ele deixa mudar a temperatura na hora. E o JSON é o mesmo que combinamos com o Giovanni, para o dado chegar na API sem precisar de conversão.
+
