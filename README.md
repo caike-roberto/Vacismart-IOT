@@ -120,9 +120,11 @@ Para mandar de verdade para a API, o gateway usa duas variáveis de ambiente. No
 
 ```powershell
 $env:API_URL = "https://URL-DA-API/api/v1/transportes/ID/leituras"
-$env:API_TOKEN = "token-do-dispositivo"
+$env:API_TOKEN = "jwt-da-api"
 python gateway.py leituras.txt
 ```
+
+A API usa JWT Bearer, não uma chave fixa. O gateway manda o token no cabeçalho `Authorization: Bearer ...`.
 
 No Linux ou Mac, troque por `export API_URL="..."` e `export API_TOKEN="..."`. O token não fica em nenhum arquivo do repositório. O `.env.example` só mostra quais variáveis existem.
 
