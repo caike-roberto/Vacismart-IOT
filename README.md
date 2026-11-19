@@ -143,6 +143,16 @@ Depois copiamos essas leituras para o `gateway/leituras.txt` e rodamos o gateway
 
 A classificação em normal, atenção e ocorrência é feita pela API Java, não pelo Arduino. Aqui só testamos a medição, o envio e o formato do dado.
 
+![Teste 1 - normal](docs/evidencias/teste1_normal.png)
+
+![Teste 2 - atencao](docs/evidencias/teste2_atencao.png)
+
+![Teste 3 - fora da faixa](docs/evidencias/teste3_ocorrencia.png)
+
+![Teste 4 - sensor desconectado](docs/evidencias/teste4_sensor.png)
+
+![Gateway rodando](docs/evidencias/gateway.png)
+
 ## Limitações
 
 - Tudo foi feito em simulador. Não usamos sensor físico, então não tem calibração nem teste com uma caixa térmica real.
