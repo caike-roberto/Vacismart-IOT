@@ -38,7 +38,7 @@ Para a demonstração usamos uma vacina fictícia, a "Vacina Demo A", com faixa 
 | Leitura | Como a API classifica |
 |---|---|
 | de 3,0 a 7,0 °C | normal |
-| de 2,0 a 3,0 °C ou de 7,0 a 8,0 °C | atenção |
+| de 2,0 a menos de 3,0 °C ou acima de 7,0 até 8,0 °C | atenção |
 | abaixo de 2,0 °C ou acima de 8,0 °C | ocorrência |
 
 ## Sobre o simulador
@@ -65,7 +65,7 @@ Tudo foi montado no simulador:
 
 O DS18B20 tem três pinos. Ligamos o VCC no 5V do Arduino, o GND no GND e o pino de dados (DQ) no pino digital 2. O resistor de 4,7 kΩ fica entre o pino de dados e o 5V, e serve para o sensor funcionar direito.
 
-Print do circuito: `docs/circuito.png`
+![Circuito no Wokwi](docs/circuito.png).
 
 ## Como os dados chegam até o sistema
 
@@ -160,6 +160,7 @@ A classificação em normal, atenção e ocorrência é feita pela API Java, nã
 - No simulador, as leituras passam por um arquivo de texto. Com um Arduino de verdade, o gateway leria direto da porta serial.
 - Os limites de temperatura são só do cenário de demonstração. Isso não é um sistema clínico validado.
 - Não tem GPS nem localização do transporte, foi decisão do grupo.
+- Não conectamos o gateway na API da Azure. A integração foi só simulada, como combinamos. O gateway monta o JSON no formato da API e já tem o envio com autenticação JWT pronto, mas nos testes ele só mostra o JSON na tela.
 
 ## Por que fizemos assim
 
