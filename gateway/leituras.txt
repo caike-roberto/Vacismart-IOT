@@ -1,0 +1,7 @@
+# leituras copiadas do monitor serial do Wokwi (uma por linha)
+5.2
+5.2
+7.8
+7.8
+9.1
+ERRO_SENSOR
